@@ -1,0 +1,30 @@
+name: dao
+
+plugins:
+  - name: alchemy
+  - name: etherscan
+  - name: solidity
+  - name: foundry
+
+default_ecosystem: ethereum
+
+ethereum:
+  default_network: local
+  local:
+    default_provider: foundry
+
+foundry:
+  fork:
+    ethereum:
+      mainnet:
+        upstream_provider: alchemy
+
+dependencies:
+  - name: openzeppelin
+    github: OpenZeppelin/openzeppelin-contracts
+    version: 4.8.3
+
+solidity:
+  via_ir: true
+  import_remapping:
+    - "@openzeppelin/contracts=openzeppelin/v4.8.3"
