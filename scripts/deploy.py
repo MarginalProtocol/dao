@@ -27,8 +27,17 @@ def main():
         )
         click.echo(f"Deployed Marginal DAO token to {mrgl.address}")
 
-        # set owner to admin address
+        # set owner to admin address and transfer initial mint to admin
         if admin_addr != deployer.address:
-            click.echo("Setting Marginal DAO token owner ...")
+            click.echo("Transferring initial supply to Marginal DAO admin ...")
+            initial_supply = mrgl.initialSupply()
+            symbol = mrgl.symbol()
+            decimals = mrgl.decimals()
+            mrgl.transfer(admin_addr, initial_supply, sender=deployer)
+            click.echo(
+                f"Transferred initial supply of {initial_supply / 10**decimals} {symbol} to {admin_addr}"
+            )
+
+            click.echo("Setting Marginal DAO token owner to admin ...")
             mrgl.setOwner(admin_addr, sender=deployer)
             click.echo(f"Set Marginal DAO token owner to {admin_addr}")
