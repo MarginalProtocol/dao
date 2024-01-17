@@ -44,7 +44,7 @@ contract Mrgl is ERC20 {
         mintingAllowedAfter = block.timestamp + minimumTimeBetweenMints;
 
         // check amount below inflation cap
-        uint256 amountMax = (totalSupply() * mintCap) / 100;
+        uint256 amountMax = Math.mulDiv(totalSupply(), mintCap, 100);
         require(amount <= amountMax, "exceeded mint cap");
 
         _mint(to, amount);
