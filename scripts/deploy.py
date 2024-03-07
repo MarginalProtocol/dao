@@ -21,7 +21,7 @@ def main():
     # deploy marginal dao token
     if click.confirm("Deploy Marginal DAO token?"):
         click.echo("Deploying Marginal DAO token ...")
-        mrgl = project.Mrgl.deploy(
+        mrgl = project.MarginalToken.deploy(
             sender=deployer,
             publish=publish,
         )

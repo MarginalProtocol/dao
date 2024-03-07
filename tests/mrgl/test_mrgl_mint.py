@@ -50,7 +50,7 @@ def test_mrgl_mint__reverts_when_to_zero_address(mrgl, admin, chain):
 
 def test_mrgl_mint__reverts_when_exceed_mint_cap(mrgl, admin, alice, chain):
     assert mrgl.initialSupply() == 100000000000000000000000000
-    assert mrgl.mintCap() == 5
+    assert mrgl.mintCap() == 2
 
     amount = 5000000000000000000000001  # 5M + 1 wei
     minting_allowed_after = mrgl.mintingAllowedAfter()

@@ -18,4 +18,9 @@ def bob(accounts):
 
 @pytest.fixture(scope="session")
 def mrgl(project, admin):
-    return project.Mrgl.deploy(sender=admin)
+    return project.MarginalToken.deploy(sender=admin)
+
+
+@pytest.fixture(scope="session")
+def points(project, mrgl, admin):
+    return project.PointsStaking.deploy(mrgl.address, sender=admin)

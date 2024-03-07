@@ -4,22 +4,22 @@ pragma solidity 0.8.17;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-/// @title Mrgl
+/// @title MarginalToken
 /// @notice The Marginal DAO token used for DAO operations of the Marginal protocol
-contract Mrgl is ERC20 {
+contract MarginalToken is ERC20 {
     /// @notice Initial number of tokens in circulation
-    uint256 public constant initialSupply = 100_000_000e18; // 100 million Mrgl
+    uint256 public constant initialSupply = 100_000_000e18; // 100 million
 
     /// @notice Minimum time between mints
     uint256 public constant minimumTimeBetweenMints = 1 days * 365;
 
     /// @notice Cap on the percentage of totalSupply that can be minted at each mint
-    uint256 public constant mintCap = 5;
+    uint256 public constant mintCap = 2;
 
     /// @notice The timestamp after which the next minting may occur
     uint256 public mintingAllowedAfter;
 
-    /// @notice The minter of Mrgl tokens
+    /// @notice The minter of Marginal DAO tokens
     address public owner;
     event OwnerChanged(address indexed oldOwner, address indexed newOwner);
 

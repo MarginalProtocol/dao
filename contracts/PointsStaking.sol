@@ -6,7 +6,7 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
 /// @title PointsStaking
-/// @notice Placeholder staking contract for the Marginal DAO token until escrowed Mrgl live.
+/// @notice Placeholder staking contract for the Marginal DAO token until escrowed token live.
 /// @dev Points tracked off-chain using events and snapshots.
 contract PointsStaking {
     using SafeERC20 for IERC20;
@@ -45,7 +45,7 @@ contract PointsStaking {
     }
 
     /// @notice Locks staking token in contract updating stake snapshot
-    /// @dev amount must be always fit in uint224 given Marginal DAO token supply at launch
+    /// @dev amount should always fit in uint224 given Marginal DAO token supply
     /// @param amount The amount of staking token to lock
     function lock(uint256 amount) external {
         Stake memory stake = stakes[msg.sender];
