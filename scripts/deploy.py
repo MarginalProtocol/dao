@@ -19,6 +19,7 @@ def main():
     publish = click.prompt("Publish to Etherscan?", default=False)
 
     # deploy marginal dao token
+    mrgl = None
     if click.confirm("Deploy Marginal DAO token?"):
         click.echo("Deploying Marginal DAO token ...")
         mrgl = project.MarginalToken.deploy(
@@ -41,3 +42,15 @@ def main():
             click.echo("Setting Marginal DAO token owner to admin ...")
             mrgl.setOwner(admin_addr, sender=deployer)
             click.echo(f"Set Marginal DAO token owner to {admin_addr}")
+
+    # deploy points staking
+    if click.confirm("Deploy points staking?"):
+        mrgl_address = mrgl.address if mrgl is not None else None
+        if mrgl_address is None:
+            mrgl_address = click.prompt("Marginal DAO token address", type=str)
+
+        click.echo("Deploying points staking ...")
+        points = project.PointsStaking.deploy(
+            mrgl_address, sender=deployer, publish=publish
+        )
+        click.echo(f"Deployed points staking to {points.address}")
