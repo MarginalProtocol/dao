@@ -23,7 +23,7 @@ contract MarginalToken is ERC20 {
     address public owner;
     event OwnerChanged(address indexed oldOwner, address indexed newOwner);
 
-    constructor() ERC20("Marginal DAO Token", "MRGL") {
+    constructor() ERC20("Marginal DAO Token", "MARG") {
         owner = msg.sender;
         _mint(msg.sender, initialSupply);
         mintingAllowedAfter = block.timestamp + minimumTimeBetweenMints;
