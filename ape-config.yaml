@@ -27,8 +27,12 @@ dependencies:
   - name: openzeppelin
     github: OpenZeppelin/openzeppelin-contracts
     version: 4.8.3
+  - name: openzeppelin-2.3.0
+    github: OpenZeppelin/openzeppelin-contracts
+    version: 2.3.0
 
 solidity:
   via_ir: true
   import_remapping:
     - "@openzeppelin/contracts=openzeppelin/v4.8.3"
+    - "@openzeppelin-solidity-2.3.0/contracts=openzeppelin-2.3.0/v2.3.0"
