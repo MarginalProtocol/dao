@@ -50,7 +50,7 @@ def main():
             mrgl_address = click.prompt("Marginal DAO token address", type=str)
 
         click.echo("Deploying points staking ...")
-        points = project.PointsStaking.deploy(
+        points = project.StakingPoints.deploy(
             mrgl_address, sender=deployer, publish=publish
         )
         click.echo(f"Deployed points staking to {points.address}")

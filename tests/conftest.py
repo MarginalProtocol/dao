@@ -23,4 +23,4 @@ def mrgl(project, admin):
 
 @pytest.fixture(scope="session")
 def points(project, mrgl, admin):
-    return project.PointsStaking.deploy(mrgl.address, sender=admin)
+    return project.StakingPoints.deploy(mrgl.address, sender=admin)

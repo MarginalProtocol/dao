@@ -5,10 +5,10 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
-/// @title PointsStaking
+/// @title StakingPoints
 /// @notice Placeholder staking contract for the Marginal DAO token until escrowed token live.
 /// @dev Points tracked off-chain using events and snapshots.
-contract PointsStaking {
+contract StakingPoints {
     using SafeERC20 for IERC20;
     using SafeCast for uint256;
 
