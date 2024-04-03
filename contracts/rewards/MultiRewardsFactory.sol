@@ -42,8 +42,7 @@ contract MultiRewardsFactory is Ownable {
 
     ///// permissioned functions
 
-    // deploy a staking reward contract for the staking token, and store the reward amount
-    // the reward will be distributed to the staking reward contract no sooner than the genesis
+    // deploy a staking reward contract for the staking token
     function deploy(address stakingToken) public onlyOwner {
         require(
             multiRewardsByStakingToken[stakingToken] == address(0),
@@ -55,7 +54,8 @@ contract MultiRewardsFactory is Ownable {
         stakingTokens.push(stakingToken);
     }
 
-    // adds reward in a particular rewards token to a staking token
+    // adds reward in a particular rewards token to a staking token. the reward will be
+    // distributed to the staking reward contract no sooner than the genesis
     function addReward(
         address stakingToken,
         address rewardsToken,
@@ -89,7 +89,7 @@ contract MultiRewardsFactory is Ownable {
     ///// permissionless functions
 
     // call notifyRewardAmount for all staking tokens with given reward.
-    function notifyRewardAmounts(address rewardsToken) public {
+    function notifyRewardAmounts(address rewardsToken) external {
         require(
             stakingTokens.length > 0,
             "MultiRewardsFactory::notifyRewardAmounts: called before any deploys"
@@ -127,10 +127,7 @@ contract MultiRewardsFactory is Ownable {
         uint256 rewardAmount = info.rewardAmount;
         info.rewardAmount = 0;
 
-        require(
-            IERC20(rewardsToken).transfer(multiRewards, rewardAmount),
-            "MultiRewardsFactory::notifyRewardAmount: transfer failed"
-        );
+        IERC20(rewardsToken).safeTransfer(multiRewards, rewardAmount);
         MultiRewards(multiRewards).notifyRewardAmount(
             rewardsToken,
             rewardAmount

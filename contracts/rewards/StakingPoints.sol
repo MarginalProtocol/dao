@@ -53,6 +53,7 @@ contract StakingPoints is IStakingPoints {
         stake.blockTimestamp = _blockTimestamp();
         stakes[msg.sender] = stake;
 
+        /// @dev non-standard token transfers not supported (e.g. transfer tax)
         IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
         emit Lock(msg.sender, stake.blockTimestamp, stake.balance);
     }
