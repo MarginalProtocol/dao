@@ -5,14 +5,16 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
+import {IStakingPoints} from "../interfaces/IStakingPoints.sol";
+
 /// @title StakingPoints
 /// @notice Placeholder staking contract for the Marginal DAO token until escrowed token live.
 /// @dev Points tracked off-chain using events and snapshots.
-contract StakingPoints {
+contract StakingPoints is IStakingPoints {
     using SafeERC20 for IERC20;
     using SafeCast for uint256;
 
-    /// @notice The address of the staking token
+    /// @inheritdoc IStakingPoints
     address public immutable token;
 
     struct Stake {
@@ -21,7 +23,7 @@ contract StakingPoints {
         // timestamp of last update to stake
         uint32 blockTimestamp;
     }
-    /// @notice `msg.sender` current balance of staking token in the contract
+    /// @inheritdoc IStakingPoints
     mapping(address => Stake) public stakes;
 
     event Lock(
@@ -44,9 +46,7 @@ contract StakingPoints {
         return uint32(block.timestamp);
     }
 
-    /// @notice Locks staking token in contract updating stake snapshot
-    /// @dev amount should always fit in uint224 given Marginal DAO token supply
-    /// @param amount The amount of staking token to lock
+    /// @inheritdoc IStakingPoints
     function lock(uint256 amount) external {
         Stake memory stake = stakes[msg.sender];
         stake.balance = (uint256(stake.balance) + amount).toUint224();
@@ -57,8 +57,7 @@ contract StakingPoints {
         emit Lock(msg.sender, stake.blockTimestamp, stake.balance);
     }
 
-    /// @notice Frees staking token from contract updating stake snapshot
-    /// @param amount The amount of staking token to free
+    /// @inheritdoc IStakingPoints
     function free(uint256 amount) external {
         Stake memory stake = stakes[msg.sender];
         require(amount <= uint256(stake.balance), "amount > stake balance");
