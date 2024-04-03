@@ -57,6 +57,6 @@ def multirewards_factory(project, admin, chain):
 
 @pytest.fixture(scope="session")
 def multirewards(project, admin, staking_token, multirewards_factory):
-    multirewards_factory.deploy(staking_token.address, sender=admin)
-    multirewards_address = multirewards_factory.stakingTokens(0)
+    tx = multirewards_factory.deploy(staking_token.address, sender=admin)
+    multirewards_address = tx.decode_logs(multirewards_factory.Deploy)[0].multiRewards
     return project.MultiRewards.at(multirewards_address)

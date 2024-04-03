@@ -32,6 +32,18 @@ contract MultiRewardsFactory is Ownable {
     mapping(address => mapping(address => RewardsInfo))
         public rewardsInfoByStakingAndRewardsToken;
 
+    event Deploy(address indexed stakingToken, address multiRewards);
+    event AddReward(
+        address indexed stakingToken,
+        address indexed rewardsToken,
+        uint256 rewardAmount
+    );
+    event NotifyRewardAmount(
+        address indexed stakingToken,
+        address indexed rewardsToken,
+        uint256 rewardAmount
+    );
+
     constructor(uint256 _stakingRewardsGenesis) public Ownable() {
         require(
             _stakingRewardsGenesis >= block.timestamp,
@@ -48,10 +60,10 @@ contract MultiRewardsFactory is Ownable {
             multiRewardsByStakingToken[stakingToken] == address(0),
             "MultiRewardsFactory::deploy: already deployed"
         );
-        multiRewardsByStakingToken[stakingToken] = address(
-            new MultiRewards(stakingToken)
-        );
+        address multiRewards = address(new MultiRewards(stakingToken));
+        multiRewardsByStakingToken[stakingToken] = multiRewards;
         stakingTokens.push(stakingToken);
+        emit Deploy(stakingToken, multiRewards);
     }
 
     // adds reward in a particular rewards token to a staking token. the reward will be
@@ -84,6 +96,7 @@ contract MultiRewardsFactory is Ownable {
                 rewardsDuration
             );
         }
+        emit AddReward(stakingToken, rewardsToken, rewardAmount);
     }
 
     ///// permissionless functions
@@ -132,5 +145,6 @@ contract MultiRewardsFactory is Ownable {
             rewardsToken,
             rewardAmount
         );
+        emit NotifyRewardAmount(stakingToken, rewardsToken, rewardAmount);
     }
 }
