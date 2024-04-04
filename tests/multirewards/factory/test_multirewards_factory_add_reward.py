@@ -39,9 +39,9 @@ def test_multirewards_factory_add_reward__updates_reward_info_when_initialized(
     )
     mrgl.transfer(multirewards_factory.address, reward_amount, sender=admin)
 
-    # mine the chain half rewards duration for some time and to move past staking genesis time
-    rewards_duration = multirewards_factory.rewardsDuration()
-    dt = rewards_duration // 2
+    # mine the chain to move past staking genesis time
+    genesis = multirewards_factory.stakingRewardsGenesis()
+    dt = genesis - chain.pending_timestamp + 1
     chain.mine(deltatime=dt)
 
     # notify first round of rewards in multirewards
@@ -52,6 +52,11 @@ def test_multirewards_factory_add_reward__updates_reward_info_when_initialized(
     )
     assert info.rewardAmount == 0
     assert info.initialized is True
+
+    # mine the chain half rewards duration for some time
+    rewards_duration = multirewards_factory.rewardsDuration()
+    dt = rewards_duration // 2
+    chain.mine(deltatime=dt)
 
     # second round of rewards
     multirewards_factory.addReward(
