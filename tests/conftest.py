@@ -40,8 +40,11 @@ def token_b(create_token):
 
 
 @pytest.fixture(scope="session")
-def staking_token(create_token):
-    return create_token("STAKE", decimals=18)
+def staking_token(create_token, admin):
+    amount = int(1e9) * int(1e18)
+    token = create_token("STAKE", decimals=18)
+    token.mint(admin.address, amount, sender=admin)
+    return token
 
 
 @pytest.fixture(scope="session")
