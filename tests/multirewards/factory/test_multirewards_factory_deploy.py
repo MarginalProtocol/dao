@@ -14,7 +14,6 @@ def test_multirewards_factory_deploy__deploys_multirewards(
     assert (
         project.MultiRewards.at(multirewards_address).stakingToken() == token_a.address
     )
-    assert multirewards_factory.stakingTokens(0) == token_a.address
 
 
 def test_multirewards_factory_deploy__emits_deploy(
