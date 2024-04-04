@@ -8,10 +8,12 @@ import "@openzeppelin-solidity-2.3.0/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin-solidity-2.3.0/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin-solidity-2.3.0/contracts/ownership/Ownable.sol";
 
+import "../interfaces/IMultiRewards.sol";
+
 /// @title MultiRewards
 /// @author Ben Hauser
 /// @dev Fork of Curve.fi MultiRewards which is forked from Synthetix StakingRewards for multiple reward tokens
-contract MultiRewards is ReentrancyGuard, Ownable {
+contract MultiRewards is IMultiRewards, ReentrancyGuard, Ownable {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 

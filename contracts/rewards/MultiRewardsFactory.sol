@@ -5,11 +5,12 @@ import "@openzeppelin-solidity-2.3.0/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin-solidity-2.3.0/contracts/ownership/Ownable.sol";
 
 import "./MultiRewards.sol";
+import "../interfaces/IMultiRewardsFactory.sol";
 
 /// @title MultiRewardsFactory
 /// @author Noah Zinsmeister
 /// @dev Fork of Uniswap liquidity staker StakingRewardsFactory adapted for Curve.fi MultiRewards
-contract MultiRewardsFactory is Ownable {
+contract MultiRewardsFactory is IMultiRewardsFactory, Ownable {
     using SafeERC20 for IERC20;
 
     // immutables
@@ -90,7 +91,7 @@ contract MultiRewardsFactory is Ownable {
 
         if (!info.initialized) {
             info.initialized = true;
-            MultiRewards(multiRewards).addReward(
+            IMultiRewards(multiRewards).addReward(
                 rewardsToken,
                 address(this),
                 rewardsDuration
@@ -141,7 +142,7 @@ contract MultiRewardsFactory is Ownable {
         info.rewardAmount = 0;
 
         IERC20(rewardsToken).safeTransfer(multiRewards, rewardAmount);
-        MultiRewards(multiRewards).notifyRewardAmount(
+        IMultiRewards(multiRewards).notifyRewardAmount(
             rewardsToken,
             rewardAmount
         );
