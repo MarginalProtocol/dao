@@ -8,7 +8,7 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 /// @notice The Marginal DAO token used for DAO operations of the Marginal protocol
 contract MarginalToken is ERC20 {
     /// @notice Initial number of tokens in circulation
-    uint256 public constant initialSupply = 100_000_000e18; // 100 million
+    uint256 public constant initialSupply = 1_000_000_000e18; // 1 billion
 
     /// @notice Minimum time between mints
     uint256 public constant minimumTimeBetweenMints = 1 days * 365;

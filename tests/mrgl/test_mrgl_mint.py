@@ -3,7 +3,7 @@ from ape.utils import ZERO_ADDRESS
 
 
 def test_mrgl_mint__mints_tokens(mrgl, admin, alice, chain):
-    amount = 1000000000000000000000000  # 1M
+    amount = 10000000000000000000000000  # 10M
     balance = mrgl.balanceOf(alice)
     total_supply = mrgl.totalSupply()
 
@@ -16,7 +16,7 @@ def test_mrgl_mint__mints_tokens(mrgl, admin, alice, chain):
 
 
 def test_mrgl_mint__sets_next_minting_allowed_time(mrgl, admin, alice, chain):
-    amount = 1000000000000000000000000  # 1M
+    amount = 10000000000000000000000000  # 10M
     minting_allowed_after = mrgl.mintingAllowedAfter()
 
     chain.mine(timestamp=minting_allowed_after)
@@ -27,7 +27,7 @@ def test_mrgl_mint__sets_next_minting_allowed_time(mrgl, admin, alice, chain):
 
 
 def test_mrgl_mint__reverts_when_not_minter_role(mrgl, alice, chain):
-    amount = 1000000000000000000000000  # 1M
+    amount = 10000000000000000000000000  # 10M
     minting_allowed_after = mrgl.mintingAllowedAfter()
     chain.mine(timestamp=minting_allowed_after)
     with reverts("not minter"):
@@ -35,13 +35,13 @@ def test_mrgl_mint__reverts_when_not_minter_role(mrgl, alice, chain):
 
 
 def test_mrgl_mint__reverts_when_not_allowed_yet(mrgl, admin, alice):
-    amount = 1000000000000000000000000  # 1M
+    amount = 10000000000000000000000000  # 10M
     with reverts("minting not allowed yet"):
         mrgl.mint(alice, amount, sender=admin)
 
 
 def test_mrgl_mint__reverts_when_to_zero_address(mrgl, admin, chain):
-    amount = 1000000000000000000000000  # 1M
+    amount = 10000000000000000000000000  # 10M
     minting_allowed_after = mrgl.mintingAllowedAfter()
     chain.mine(timestamp=minting_allowed_after)
     with reverts("minting to zero address"):
@@ -49,10 +49,10 @@ def test_mrgl_mint__reverts_when_to_zero_address(mrgl, admin, chain):
 
 
 def test_mrgl_mint__reverts_when_exceed_mint_cap(mrgl, admin, alice, chain):
-    assert mrgl.initialSupply() == 100000000000000000000000000
+    assert mrgl.initialSupply() == 1000000000000000000000000000
     assert mrgl.mintCap() == 2
 
-    amount = 5000000000000000000000001  # 5M + 1 wei
+    amount = 50000000000000000000000001  # 50M + 1 wei
     minting_allowed_after = mrgl.mintingAllowedAfter()
     chain.mine(timestamp=minting_allowed_after)
 
