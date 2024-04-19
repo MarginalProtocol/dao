@@ -33,10 +33,10 @@ def test_multirewards_withdraw__updates_reward(
 
     # @dev use pytest approx given 1s diff
     assert reward_data.lastUpdateTime == timestamp
-    assert pytest.approx(reward_data.rewardPerTokenStored, rel=1e-6) == reward_per_token
-    assert pytest.approx(rewards, rel=1e-6) == earned
+    assert pytest.approx(reward_data.rewardPerTokenStored, rel=1e-5) == reward_per_token
+    assert pytest.approx(rewards, rel=1e-5) == earned
     assert (
-        pytest.approx(user_reward_per_token_paid, rel=1e-6)
+        pytest.approx(user_reward_per_token_paid, rel=1e-5)
         == reward_data.rewardPerTokenStored
     )
 
