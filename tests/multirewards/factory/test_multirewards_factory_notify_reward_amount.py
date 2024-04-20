@@ -134,18 +134,30 @@ def test_multirewards_factory_notify_reward_amount__reverts_when_not_deployed(
         )
 
 
-def test_multirewards_factory_notify_reward_amount__reverts_when_not_added(
+def test_multirewards_factory_notify_reward_amount__passes_when_not_added(
     multirewards_factory, multirewards, staking_token, mrgl, admin, alice, chain
 ):
+    reward_amount = int(0.0105 * 100 * 1e6) * int(1e18)
+    mrgl.transfer(multirewards_factory.address, reward_amount, sender=admin)
+
     # mine the chain to move past staking genesis time
     genesis = multirewards_factory.stakingRewardsGenesis()
     dt = genesis - chain.pending_timestamp + 1
     chain.mine(deltatime=dt)
 
-    with reverts("MultiRewardsFactory::notifyRewardAmount: not added"):
-        multirewards_factory.notifyRewardAmount(
-            staking_token.address, mrgl.address, sender=alice
-        )
+    info = multirewards_factory.rewardsInfoByStakingAndRewardsToken(
+        staking_token.address, mrgl.address
+    )
+    assert info.rewardAmount == 0
+
+    # should succeed with nothing happening
+    multirewards_factory.notifyRewardAmount(
+        staking_token.address, mrgl.address, sender=alice
+    )
+    reward_data = multirewards.rewardData(mrgl.address)
+
+    assert mrgl.balanceOf(multirewards_factory.address) == reward_amount
+    assert reward_data.lastUpdateTime == 0
 
 
 def test_multirewards_factory_notify_reward_amount__reverts_when_not_funded(

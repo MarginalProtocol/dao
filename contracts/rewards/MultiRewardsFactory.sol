@@ -133,10 +133,7 @@ contract MultiRewardsFactory is IMultiRewardsFactory, Ownable {
         RewardsInfo storage info = rewardsInfoByStakingAndRewardsToken[
             stakingToken
         ][rewardsToken];
-        require(
-            info.rewardAmount > 0,
-            "MultiRewardsFactory::notifyRewardAmount: not added"
-        );
+        if (info.rewardAmount == 0) return; // pass if no reward in case using notifyRewardAmounts loop
 
         uint256 rewardAmount = info.rewardAmount;
         info.rewardAmount = 0;
