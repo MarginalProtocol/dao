@@ -221,6 +221,4 @@ contract MultiRewards is IMultiRewards, ReentrancyGuard, Ownable {
         address indexed rewardsToken,
         uint256 reward
     );
-    event RewardsDurationUpdated(address token, uint256 newDuration);
-    event Recovered(address token, uint256 amount);
 }
