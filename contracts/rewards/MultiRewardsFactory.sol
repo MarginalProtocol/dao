@@ -15,7 +15,7 @@ contract MultiRewardsFactory is IMultiRewardsFactory, Ownable {
 
     // immutables
     uint256 public stakingRewardsGenesis;
-    uint256 public rewardsDuration = 30 days;
+    uint256 public constant rewardsDuration = 30 days;
 
     // the staking tokens for which the rewards contract has been deployed
     address[] public stakingTokens;

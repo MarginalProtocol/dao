@@ -117,3 +117,24 @@ def test_multirewards_factory_add_reward__reverts_when_already_added(
         multirewards_factory.addReward(
             staking_token.address, mrgl.address, reward_amount, sender=admin
         )
+
+
+def test_multirewards_factory_add_reward__reverts_when_exceeds_max_reward_tokens(
+    multirewards_factory, multirewards, mrgl, staking_token, create_token, admin
+):
+    max_reward_tokens = multirewards.maxRewardTokens()
+
+    # all should pass
+    for i in range(max_reward_tokens):
+        reward_amount = int((i + 1) * 100 * 1e6) * int(1e18)
+        token = create_token(f"token-{i}", decimals=18)
+        multirewards_factory.addReward(
+            staking_token.address, token.address, reward_amount, sender=admin
+        )
+
+    # should revert since would exceed max
+    reward_amount = int((max_reward_tokens + 1) * 100 * 1e6) * int(1e18)
+    with reverts("MultiRewards::addReward: Cannot add more than max"):
+        multirewards_factory.addReward(
+            staking_token.address, mrgl.address, reward_amount, sender=admin
+        )

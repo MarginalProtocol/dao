@@ -17,6 +17,8 @@ contract MultiRewards is IMultiRewards, ReentrancyGuard, Ownable {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
+    uint256 public constant maxRewardTokens = 10;
+
     /* ========== STATE VARIABLES ========== */
 
     struct Reward {
@@ -51,6 +53,10 @@ contract MultiRewards is IMultiRewards, ReentrancyGuard, Ownable {
         uint256 _rewardsDuration
     ) public onlyOwner {
         require(rewardData[_rewardsToken].rewardsDuration == 0);
+        require(
+            rewardTokens.length < maxRewardTokens,
+            "MultiRewards::addReward: Cannot add more than max"
+        );
         rewardTokens.push(_rewardsToken);
         rewardData[_rewardsToken].rewardsDistributor = _rewardsDistributor;
         rewardData[_rewardsToken].rewardsDuration = _rewardsDuration;
