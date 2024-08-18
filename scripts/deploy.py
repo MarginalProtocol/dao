@@ -43,6 +43,18 @@ def main():
             mrgl.setOwner(admin_addr, sender=deployer)
             click.echo(f"Set Marginal DAO token owner to {admin_addr}")
 
+    # deploy multi rewards
+    if click.confirm("Deploy multi rewards factory?"):
+        seconds_until_genesis = click.prompt("Seconds until genesis", type=int)
+        genesis = chain.blocks.head.timestamp + seconds_until_genesis
+        click.echo(f"Genesis timestamp: {genesis}")
+
+        click.echo("Deploying multi rewards factory ...")
+        multirewards_factory = project.MultiRewardsFactory.deploy(
+            genesis, sender=deployer, publish=publish
+        )
+        click.echo(f"Deployed multi rewards factory to {multirewards_factory.address}")
+
     # deploy points staking
     if click.confirm("Deploy points staking?"):
         mrgl_address = mrgl.address if mrgl is not None else None
