@@ -8,17 +8,17 @@ interface IAPR {
     /// @return The address of the MultiRewards factory
     function multiRewardsFactory() external view returns (address);
 
-    /// @notice Quotes the instantaneous percentage reward rate received by the account extended over duration for the LP token staked in MultiRewards
+    /// @notice Quotes the instantaneous percentage reward rate received extended over duration for the LP token staked in MultiRewards
     /// @dev Assumes stakingToken for MultiRewards contract is a Marginal v1 LP pool token
     /// @param stakingToken The address of the staking token in the MultiRewards contract
     /// @param rewardsToken The address of the rewards token for the MultiRewards contract
     /// @param rewardsPoolWithWETH9 The address of the Marginal v1 pool for the rewards token paired with WETH9
+    /// @param duration The duration to extend the reward rate per second to
     /// @return rate The percentage rate over duration multiplied by 1e18
     function quotePercentageRate(
         address stakingToken,
         address rewardsToken,
         address rewardsPoolWithWETH9,
-        address account,
         uint32 duration
     ) external view returns (uint256 rate);
 

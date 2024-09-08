@@ -26,6 +26,7 @@ contract APR is IAPR, PeripheryImmutableState {
     error InvalidTokens();
     error PoolNotInitialized();
     error MultiRewardsNotInitialized();
+    error MultiRewardsNotSupplied();
 
     constructor(
         address _factory,
@@ -40,7 +41,6 @@ contract APR is IAPR, PeripheryImmutableState {
         address stakingToken,
         address rewardsToken,
         address rewardsPoolWithWETH9,
-        address account,
         uint32 duration
     ) external view returns (uint256 rate) {
         address multiRewards = IMultiRewardsFactory(multiRewardsFactory)
@@ -53,10 +53,8 @@ contract APR is IAPR, PeripheryImmutableState {
         ).rewardData(rewardsToken);
         if (block.timestamp > periodFinish) return 0;
 
-        uint256 shares = IMultiRewards(multiRewards).balanceOf(account);
         uint256 totalSupply = IMultiRewards(multiRewards).totalSupply();
-        if (shares == 0 || totalSupply == 0) return 0;
-        rewardRate = Math.mulDiv(rewardRate, shares, totalSupply);
+        if (totalSupply == 0) revert MultiRewardsNotSupplied();
 
         uint256 rewards = (
             rewardsToken != WETH9
@@ -67,7 +65,7 @@ contract APR is IAPR, PeripheryImmutableState {
                 )
                 : rewardRate
         );
-        uint256 principal = quotePoolTokenInWETH9(stakingToken, shares);
+        uint256 principal = quotePoolTokenInWETH9(stakingToken, totalSupply);
         rate = Math.mulDiv(rewards, (1e18 * uint256(duration)), principal);
     }
 
