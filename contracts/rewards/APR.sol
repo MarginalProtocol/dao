@@ -104,7 +104,6 @@ contract APR is IAPR, PeripheryImmutableState {
     }
 
     /// @inheritdoc IAPR
-    /// @notice Quotes the value of the pool LP token shares in WETH9 terms
     function quotePoolTokenInWETH9(
         address pool,
         uint256 shares
