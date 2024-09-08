@@ -32,9 +32,17 @@ dependencies:
   - name: openzeppelin-2.3.0
     github: OpenZeppelin/openzeppelin-contracts
     version: 2.3.0
+  - name: marginal-v1-core
+    github: MarginalProtocol/v1-core
+    ref: v1.0.1
+  - name: marginal-v1-periphery
+    github: MarginalProtocol/v1-periphery
+    ref: v1.0.1
 
 solidity:
   via_ir: true
   import_remapping:
     - "@openzeppelin/contracts=openzeppelin/v4.8.3"
     - "@openzeppelin-solidity-2.3.0/contracts=openzeppelin-2.3.0/v2.3.0"
+    - "@marginal/v1-core/contracts=marginal-v1-core/v1.0.1"
+    - "@marginal/v1-periphery/contracts=marginal-v1-periphery/v1.0.1"
