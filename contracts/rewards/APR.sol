@@ -10,6 +10,7 @@ import {FixedPoint128} from "@marginal/v1-core/contracts/libraries/FixedPoint128
 import {IMarginalV1Pool} from "@marginal/v1-core/contracts/interfaces/IMarginalV1Pool.sol";
 
 import {PeripheryImmutableState} from "@marginal/v1-periphery/contracts/base/PeripheryImmutableState.sol";
+import {PoolAddress} from "@marginal/v1-periphery/contracts/libraries/PoolAddress.sol";
 
 import {IMultiRewards} from "../interfaces/IMultiRewards.sol";
 import {IMultiRewardsFactory} from "../interfaces/IMultiRewardsFactory.sol";
@@ -24,6 +25,7 @@ contract APR is IAPR, PeripheryImmutableState {
     address public immutable multiRewardsFactory;
 
     error InvalidTokens();
+    error InvalidPool();
     error PoolNotInitialized();
     error MultiRewardsNotInitialized();
     error MultiRewardsNotSupplied();
@@ -75,6 +77,8 @@ contract APR is IAPR, PeripheryImmutableState {
         address token,
         uint128 amount
     ) public view returns (uint256 value) {
+        if (!PoolAddress.isPool(factory, pool)) revert InvalidPool();
+
         address token0 = IMarginalV1Pool(pool).token0();
         address token1 = IMarginalV1Pool(pool).token1();
         if (
@@ -106,6 +110,8 @@ contract APR is IAPR, PeripheryImmutableState {
         address pool,
         uint256 shares
     ) public view returns (uint256 value) {
+        if (!PoolAddress.isPool(factory, pool)) revert InvalidPool();
+
         address token0 = IMarginalV1Pool(pool).token0();
         address token1 = IMarginalV1Pool(pool).token1();
         if (token0 != WETH9 && token1 != WETH9) revert InvalidTokens();

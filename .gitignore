@@ -9,6 +9,8 @@
 .pytest_cache
 .hypothesis
 __pycache__
+.python-version
+uv.lock
 
 # node
 node_modules
