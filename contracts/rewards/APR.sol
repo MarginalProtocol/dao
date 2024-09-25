@@ -130,7 +130,8 @@ contract APR is IAPR, PeripheryImmutableState {
                 ? 2 *
                     ((uint256(totalLiquidity) << FixedPoint96.RESOLUTION) /
                         sqrtPriceX96)
-                : 2 * Math.mulDiv(liquidity, sqrtPriceX96, FixedPoint96.Q96)
+                : 2 *
+                    Math.mulDiv(totalLiquidity, sqrtPriceX96, FixedPoint96.Q96)
         );
         uint256 totalSupply = IMarginalV1Pool(pool).totalSupply();
         value = Math.mulDiv(totalValue, shares, totalSupply);
