@@ -57,7 +57,7 @@ def margv1_staking_token(assert_mainnet_fork, margv1_pool):
 
 @pytest.fixture(scope="module")
 def margv1_reward_amount():
-    return int(4.5 * 1e5) * int(1e9)
+    return int(4.5 * 1e5) * int(1e8)
 
 
 @pytest.fixture(scope="module")
@@ -90,6 +90,7 @@ def margv1_multirewards(
 
 @pytest.fixture(scope="module")
 def margv1_multirewards_initialized(
+    assert_mainnet_fork,
     multirewards_factory,
     margv1_multirewards,
     margv1_staking_token,
@@ -120,3 +121,30 @@ def margv1_multirewards_initialized(
         margv1_multirewards.address, 2**256 - 1, sender=admin
     )
     return margv1_multirewards
+
+
+@pytest.fixture(scope="module")
+def margv1_pool_initialized_with_liquidity(
+    assert_mainnet_fork, margv1_pool, margv1_router, MOG, whale, admin
+):
+    amount = MOG.balanceOf(whale.address)
+    MOG.transfer(admin.address, amount, sender=whale)
+    MOG.approve(margv1_router.address, 2**256 - 1, sender=admin)
+
+    state = margv1_pool.state()
+    amount0_desired = amount // 10
+    amount1_desired = (amount0_desired * state.sqrtPriceX96**2) // (1 << 192)
+    params = (
+        margv1_pool.token0(),
+        margv1_pool.token1(),
+        margv1_pool.maintenance(),
+        margv1_pool.oracle(),
+        admin.address,
+        amount0_desired,
+        amount1_desired,
+        0,
+        0,
+        2**256 - 1,
+    )
+    margv1_router.addLiquidity(params, sender=admin, value=amount1_desired)
+    return margv1_pool
